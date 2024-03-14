@@ -46,8 +46,9 @@ func main() {
 		}
 	})
 
-	// Gestionnaire pour les routes /lstopic
-	http.HandleFunc("/lstopic", handlers.LsTopic)
+	// Gestionnaire pour les routes
+	http.HandleFunc("/connect", handlers.ConnectHandler)
+	http.HandleFunc("/forum", handlers.LsTopic)
 
 	// Récupérez l'adresse IP de la carte Wi-Fi pour afficher les adresses du site
 	wifiIP := ip()
@@ -58,9 +59,6 @@ func main() {
 	fmt.Println(blueColor, "Accueil :")
 	fmt.Println(blueColor, "     http://localhost:8080")
 	fmt.Println(blueColor, "     http://"+wifiIP+":8080")
-	fmt.Println(blueColor, "Groupes :")
-	fmt.Println(blueColor, "     http://localhost:8080/groupes")
-	fmt.Println(blueColor, "     http://"+wifiIP+":8080/groupes", defaultColor)
 	fmt.Println()
 	fmt.Println(redColor, "Appuyez sur Ctrl+C pour arrêter le serveur", defaultColor)
 	http.ListenAndServe(":8080", nil)
