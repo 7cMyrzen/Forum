@@ -46,8 +46,12 @@ func main() {
 		}
 	})
 
-	// Gestionnaire pour les routes
+	// Gestionnaire pour les routes de connexion et d'inscription
 	http.HandleFunc("/connect", handlers.ConnectHandler)
+	http.HandleFunc("/register", handlers.RegisterHandler)
+	http.HandleFunc("/login", handlers.LoginHandler)
+
+	// Gestionnaire pour les routes du forum
 	http.HandleFunc("/forum", handlers.LsTopic)
 
 	// Récupérez l'adresse IP de la carte Wi-Fi pour afficher les adresses du site
