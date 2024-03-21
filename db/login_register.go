@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"database/sql"
 	"fmt"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -13,9 +14,9 @@ var db *sql.DB
 
 func dbConnect() error {
 	// Informations de connexion à la base de données
-	username := "root"
-	password := "**Tax1p9"
-	hostname := "127.0.0.1:3306"
+	username := "forum_admin"
+	password := "D@T3G0"
+	hostname := "10.6.0.161:3306"
 	dbname := "forum_go"
 
 	// Chaîne de connexion à la base de données
@@ -45,13 +46,15 @@ func AddUser(username, email, password string) error {
 		}
 	}
 
-	insert, err := db.Prepare("INSERT INTO user(username, email, password) VALUES(?, ?, ?)")
+	creationDate := getCurrentTime()
+
+	insert, err := db.Prepare("INSERT INTO user(username, email, password, creationDate) VALUES(?, ?, ?, ?)")
 	if err != nil {
 		return err
 	}
 	defer insert.Close()
 
-	_, err = insert.Exec(username, email, hashPassword(password))
+	_, err = insert.Exec(username, email, hashPassword(password), creationDate)
 	return err
 }
 
@@ -143,4 +146,11 @@ func showUsers() error {
 func hashPassword(password string) string {
 	hash := sha256.Sum256([]byte(password))
 	return fmt.Sprintf("%x", hash)
+}
+
+// fonction pour recuperer l'heure actuelle
+func getCurrentTime() string {
+	newTime := time.Now()
+	formattedTime := newTime.Format("2006-01-02 15:04:05")
+	return formattedTime
 }
